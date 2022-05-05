@@ -15,7 +15,7 @@ class _HomeState extends State<Home> {
   final _userName = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(         
       body: Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -24,9 +24,19 @@ class _HomeState extends State<Home> {
           const SizedBox(height: 8,),
           const Text('Multi Streaming with Friends'),
           const SizedBox(height: 40,),
-           SizedBox(
+           Container(
             width: MediaQuery.of(context).size.width,
-            child: const  TextField()),
+            child: TextField(
+              controller: _userName,  
+              decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide:const   BorderSide(color: Colors.grey),
+                    ),
+                    hintText: 'User Name',
+                  ), 
+            )),
+            const SizedBox(height: 8),
           const TextField(),
           TextButton(
               onPressed: () {
