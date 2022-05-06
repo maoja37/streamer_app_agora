@@ -37,11 +37,23 @@ class _HomeState extends State<Home> {
                   ), 
             )),
             const SizedBox(height: 8),
-          const TextField(),
-          TextButton(
+          Container(        
+                width: MediaQuery.of(context).size.width * 0.85,
+                child: TextFormField(
+                  controller: _channelName,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: const BorderSide(color: Colors.grey),
+                    ),
+                    hintText: 'Channel Name',
+                  ),
+                ),
+              ),
+          TextButton(               
               onPressed: () {
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const Participant()));
+                    MaterialPageRoute(builder: (context) =>  Participant(channelName: _channelName.text,  userName: _userName.text,)));
               },
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -52,7 +64,7 @@ class _HomeState extends State<Home> {
           TextButton(
               onPressed: () {
                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const Director()));
+                    MaterialPageRoute(builder: (context) =>  Director(channelName: _channelName.text,)));
               },
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -61,7 +73,7 @@ class _HomeState extends State<Home> {
                     Icon(Icons.cut),
                   ])),
         ],
-      )),
+      )),                      
     );
   }
 }
