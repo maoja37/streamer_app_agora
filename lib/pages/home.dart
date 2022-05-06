@@ -73,7 +73,7 @@ class _HomeState extends State<Home> {
                     Icon(Icons.cut),
                   ])),
         ],
-      )),                      
+      )),                                                                                                                               
     );
   }
 }
