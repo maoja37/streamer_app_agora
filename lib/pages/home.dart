@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:streamer/pages/director.dart';
 import 'package:streamer/pages/participant.dart';
@@ -77,7 +78,8 @@ class _HomeState extends State<Home> {
                 ),
               ),
           TextButton(               
-              onPressed: () {
+              onPressed: () async {
+                await [Permission.camera, Permission.microphone].request();
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) =>  Participant(channelName: _channelName.text,  userName: _userName.text, uid: uid,)));
               },
@@ -88,7 +90,8 @@ class _HomeState extends State<Home> {
                     Icon(Icons.live_tv),
                   ])),
           TextButton(
-              onPressed: () {
+              onPressed: ()  async {
+                await [Permission.camera, Permission.microphone].request();
                  Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) =>  Director(channelName: _channelName.text,)));
               },

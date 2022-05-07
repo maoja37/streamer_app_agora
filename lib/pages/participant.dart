@@ -29,10 +29,22 @@ class _ParticipantState extends State<Participant> {
   bool muted = false;
   bool videoDisabled = false;
 
-  
   @override
   void initState() {
+    initializeAgora();
     super.initState();
+    
+  }
+
+  @override
+  void dispose() {
+    _channel?.leave();
+    _client?.logout();
+    _client?.destroy();
+    _users.clear();
+    _engine.destroy();
+
+    super.dispose();
   }
 
   Future<void> initializeAgora() async {
@@ -93,6 +105,7 @@ class _ParticipantState extends State<Participant> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       body: Center(
           child: Stack(
@@ -105,7 +118,85 @@ class _ParticipantState extends State<Participant> {
   }
 
   Widget _toolbar() {
-    return Container();
+    return Container(
+      alignment: Alignment.bottomCenter,
+      padding: const EdgeInsets.symmetric(vertical: 48),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          RawMaterialButton(
+            onPressed: _onToggleMute,
+            child: Icon(
+              muted ? Icons.mic_off : Icons.mic,
+              color: muted ? Colors.white : Colors.blueAccent,
+              size: 20.0,
+            ),
+            shape: const CircleBorder(),
+            elevation: 2.0,
+            fillColor: muted ? Colors.blueAccent : Colors.white,
+            padding: const EdgeInsets.all(12.0),
+          ),
+          RawMaterialButton(
+            onPressed: () => _onCallEnd(context),
+            child: const Icon(
+              Icons.call_end,
+              color: Colors.white,
+              size: 35.0,
+            ),
+            shape: const CircleBorder(),
+            elevation: 2.0,
+            fillColor: Colors.redAccent,
+            padding: const EdgeInsets.all(15.0),
+          ),
+          RawMaterialButton(
+            onPressed: _onToggleVideoDisabled,
+            child: Icon(
+              videoDisabled ? Icons.videocam_off : Icons.videocam,
+              color: videoDisabled ? Colors.white : Colors.blueAccent,
+              size: 20.0,
+            ),
+            shape: const CircleBorder(),
+            elevation: 2.0,
+            fillColor: videoDisabled ? Colors.blueAccent : Colors.white,
+            padding: const EdgeInsets.all(12.0),
+          ),
+          RawMaterialButton(
+            onPressed: _onSwitchCamera,
+            child: const Icon(
+              Icons.switch_camera,
+              color: Colors.blueAccent,
+              size: 20.0,
+            ),
+            shape: const CircleBorder(),
+            elevation: 2.0,
+            fillColor: Colors.white,
+            padding: const EdgeInsets.all(12.0),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _onCallEnd(BuildContext context) {
+    Navigator.pop(context);
+  }
+
+  void _onToggleMute() {
+    setState(() {
+      muted = !muted;
+    });
+    _engine.muteLocalAudioStream(muted);
+  }
+
+  void _onToggleVideoDisabled() {
+    setState(() {
+      videoDisabled = !videoDisabled;
+    });
+    _engine.muteLocalVideoStream(videoDisabled);
+  }
+
+  void _onSwitchCamera() {
+    _engine.switchCamera();
   }
 
   Widget _broadcastView() {
